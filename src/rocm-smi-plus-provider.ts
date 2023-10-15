@@ -4,11 +4,10 @@ import * as path from 'path';
 
 class RocmSmiPlusItem extends vscode.TreeItem {
     constructor(
-        private rawObject: object,
         public readonly gpuId: number,
         public readonly ramUsage: number,
         public readonly usage: number) {
-            super(gpuId.toString(10), vscode.TreeItemCollapsibleState.None);
+          super(`${gpuId.toString(10)} RAM: ${ramUsage}% GPU: ${usage}%`, vscode.TreeItemCollapsibleState.None);
         }
 }
 
@@ -20,6 +19,19 @@ export class RocmSmiPlusProvider implements vscode.TreeDataProvider<RocmSmiPlusI
   }
 
   getChildren(element?: RocmSmiPlusItem): Thenable<RocmSmiPlusItem[]> {
-    //TODO: what to do?
+    if (!this.rawObject) {
+      return Promise.resolve([]);
+    }
+
+    if (element) {
+      return Promise.resolve([]);
+    }
+
+    return Promise.resolve(this.getGpuInfoFromRawObject(this.rawObject));
+  }
+
+  private getGpuInfoFromRawObject(rawObject: object): RocmSmiPlusItem[] {
+    //TODO: remove mock implementation.
+    return [new RocmSmiPlusItem(0, 50, 90), new RocmSmiPlusItem(1, 100, 30)];
   }
 }
