@@ -16,6 +16,14 @@
       {
         "command": "rocm-smi-plus.helloWorld",
         "title": "rocm-smi+: Hello World"
+      },
+      {
+        "command": "rocm-smi-plus.refresh",
+        "title": "Refresh",
+        "icon": {
+          "dark": "resources/dark/refresh.svg",
+          "light": "resources/light/refresh.svg"
+        }
       }
     ],
     "views": {
@@ -23,6 +31,13 @@
         {
           "id": "rocm-smi-plus",
           "name": "rocm-smi+"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "rocm-smi-plus.refresh"
         }
       ]
     }

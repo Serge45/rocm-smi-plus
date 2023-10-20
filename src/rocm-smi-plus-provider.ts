@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
+import { MockRocmSmiProcess, RocmSmiProcess } from './rocm-smi-process';
 
 class RocmSmiPlusItem extends vscode.TreeItem {
     constructor(
@@ -12,14 +11,14 @@ class RocmSmiPlusItem extends vscode.TreeItem {
 }
 
 export class RocmSmiPlusProvider implements vscode.TreeDataProvider<RocmSmiPlusItem> {
-  constructor(private rawObject: object) {}
+  constructor(private dataSource: RocmSmiProcess) {}
 
   getTreeItem(element: RocmSmiPlusItem): vscode.TreeItem {
     return element;
   }
 
   getChildren(element?: RocmSmiPlusItem): Thenable<RocmSmiPlusItem[]> {
-    if (!this.rawObject) {
+    if (!this.dataSource) {
       return Promise.resolve([]);
     }
 
@@ -27,11 +26,24 @@ export class RocmSmiPlusProvider implements vscode.TreeDataProvider<RocmSmiPlusI
       return Promise.resolve([]);
     }
 
-    return Promise.resolve(this.getGpuInfoFromRawObject(this.rawObject));
+    return Promise.resolve(this.getGpuInfoFromRawObject(this.dataSource));
   }
 
-  private getGpuInfoFromRawObject(rawObject: object): RocmSmiPlusItem[] {
-    //TODO: remove mock implementation.
-    return [new RocmSmiPlusItem(0, 50, 90), new RocmSmiPlusItem(1, 100, 30)];
+  private getGpuInfoFromRawObject(dataSource: RocmSmiProcess): RocmSmiPlusItem[] {
+    const infos = dataSource.runFormated();
+    let items = new Array<RocmSmiPlusItem>();
+
+    infos?.forEach((info, idx) => {
+      items.push(new RocmSmiPlusItem(idx, info.gpuUsage, info.ramUsage));
+    });
+
+    return items;
+  }
+
+  private _onDidChangeTreeData: vscode.EventEmitter<RocmSmiPlusItem | undefined | null | void> = new vscode.EventEmitter<RocmSmiPlusItem | undefined | null | void>();
+  readonly onDidChangeTreeData: vscode.Event<RocmSmiPlusItem | undefined | null | void> = this._onDidChangeTreeData.event;
+
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
   }
 }
