@@ -19,11 +19,8 @@
       },
       {
         "command": "rocm-smi-plus.refresh",
-        "title": "Refresh",
-        "icon": {
-          "dark": "resources/dark/refresh.svg",
-          "light": "resources/light/refresh.svg"
-        }
+        "title": "rocm-smi+: Refresh",
+        "icon": "$(extensions-refresh)"
       }
     ],
     "views": {
@@ -37,7 +34,9 @@
     "menus": {
       "view/title": [
         {
-          "command": "rocm-smi-plus.refresh"
+          "command": "rocm-smi-plus.refresh",
+          "when": "view == rocm-smi-plus",
+          "group": "navigation"
         }
       ]
     }

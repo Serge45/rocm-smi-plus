@@ -4,6 +4,8 @@ import * as vscode from 'vscode';
 import { RocmSmiPlusProvider } from './rocm-smi-plus-provider';
 import { MockRocmSmiProcess, RocmSmiProcess } from './rocm-smi-process';
 
+let gTimer: NodeJS.Timeout | null;
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -28,7 +30,27 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+	startPolling(rocmProvider);
+}
+
+function startPolling(provider: RocmSmiPlusProvider) {
+	if (gTimer) {
+		return;
+	}
+
+	gTimer = setInterval(() => {
+		provider.refresh();
+	}, 1000);
+}
+
+function stopPolling() {
+	if (gTimer) {
+		clearInterval(gTimer);
+		gTimer = null;
+	}
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+	stopPolling();
+}
