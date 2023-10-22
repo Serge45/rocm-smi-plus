@@ -6,6 +6,7 @@
   "engines": {
     "vscode": "^1.83.0"
   },
+  "repository": "https://github.com/Serge45/rocm-smi-plus.git",
   "categories": [
     "Other"
   ],
