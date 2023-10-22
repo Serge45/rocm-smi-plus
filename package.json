@@ -10,6 +10,7 @@
   "categories": [
     "Other"
   ],
+  "publisher": "rocm-smi-plus",
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
