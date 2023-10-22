@@ -1,5 +1,6 @@
 # rocm-smi-plus
-![Demo](images/demo.png)
+![Demo](https://raw.githubusercontent.com/Serge45/rocm-smi-plus/main/images/demo.png)
+
 This is an extension that display AMD GPU informations on Linux from rocm-smi in VSCode's explorer tab. Currently it shows
  - GPU utilization
  - VRAM utilization
